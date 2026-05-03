@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>우사기의 제초 작업! 🌱</title>
+    <style>
+        body {
+            background-color: #E8F5E9; /* 연그린 배경 */
+            margin: 0; overflow: hidden;
+            font-family: 'Apple SD Gothic Neo', sans-serif;
+            text-align: center;
+        }
+        #game-board {
+            width: 100vw; height: 100vh;
+            position: relative; cursor: crosshair;
+        }
+        .weed {
+            position: absolute; width: 60px; cursor: pointer;
+            transition: transform 0.1s;
+        }
+        .usagi {
+            position: absolute; width: 100px; cursor: pointer;
+            z-index: 10; animation: wobble 0.5s infinite;
+        }
+        @keyframes wobble {
+            0% { transform: rotate(0deg); }
+            50% { transform: rotate(10deg); }
+            100% { transform: rotate(0deg); }
+        }
+        #score-board {
+            position: fixed; top: 20px; left: 20px;
+            font-size: 24px; font-weight: bold; color: #2E7D32;
+            background: white; padding: 10px 20px; border-radius: 20px;
+        }
+    </style>
+</head>
+<body>
+
+    <div id="score-board">제초 점수: <span id="score">0</span></div>
+    <div id="game-board" onclick="missClick()"></div>
+
+    <!-- 사운드 (파일이 없다면 실행 시 에러는 안 나게 처리됨) -->
+    <audio id="popSound" src="pop.mp3"></audio>
+    <audio id="yahaSound" src="yaha.mp3"></audio>
+
+    <script>
+        let score = 0;
+        const board = document.getElementById('game-board');
+        const scoreDisplay = document.getElementById('score');
+
+        // 1. 잡초 생성 함수
+        function createWeed() {
+            const weed = document.createElement('img');
+            weed.src = 'weed.png'; // 잡초 이미지 파일명
+            weed.className = 'weed';
+
+            // 랜덤 위치 설정
+            weed.style.left = Math.random() * (window.innerWidth - 60) + 'px';
+            weed.style.top = Math.random() * (window.innerHeight - 60) + 'px';
+
+            weed.onclick = (e) => {
+                e.stopPropagation(); // 바닥 클릭 이벤트 방지
+                score += 10;
+                scoreDisplay.innerText = score;
+                document.getElementById('popSound').play();
+                weed.remove();
+            };
+
+            board.appendChild(weed);
+        }
+
+        // 2. 우사기(보너스) 생성 함수
+        function createUsagi() {
+            const usagi = document.createElement('img');
+            usagi.src = 'usagi.png'; // 우사기 이미지 파일명
+            usagi.className = 'usagi';
+
+            usagi.style.left = Math.random() * (window.innerWidth - 100) + 'px';
+            usagi.style.top = Math.random() * (window.innerHeight - 100) + 'px';
+
+            usagi.onclick = (e) => {
+                e.stopPropagation();
+                score += 50; // 우사기는 보너스!
+                scoreDisplay.innerText = score;
+                document.getElementById('yahaSound').play();
+                usagi.remove();
+            };
+
+            board.appendChild(usagi);
+            setTimeout(() => { if(usagi) usagi.remove(); }, 2000); // 2초 뒤 사라짐
+        }
+
+        // 게임 루프
+        setInterval(createWeed, 1000); // 1초마다 잡초 생성
+        setInterval(createUsagi, 5000); // 5초마다 우사기 등장
+
+        function missClick() {
+            // 바닥 클릭 시 효과 (필요하면 추가)
+        }
+    </script>
+</body>
+</html>
