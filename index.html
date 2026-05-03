@@ -68,6 +68,26 @@
       filter: brightness(1.15);
     }
 
+    #usagi-link {
+      display: inline-block;
+      margin-top: 20px;
+      background: linear-gradient(135deg, #a8e063, #56ab2f);
+      color: #fff;
+      text-decoration: none;
+      padding: 12px 36px;
+      font-size: 1rem;
+      font-weight: 700;
+      border-radius: 50px;
+      box-shadow: 0 4px 16px rgba(86, 171, 47, 0.4);
+      transition: transform 0.15s, box-shadow 0.15s;
+      letter-spacing: 1px;
+    }
+
+    #usagi-link:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 8px 24px rgba(86, 171, 47, 0.55);
+    }
+
     h1 {
       font-size: 2.4rem;
       margin-bottom: 8px;
@@ -175,6 +195,7 @@
   <p class="subtitle">버튼을 누르면 5세트의 행운의 번호를 드립니다!</p>
 
   <button id="generate">번호 추천받기</button>
+  <a id="usagi-link" href="usagi.html">🐰 우사기 제초 게임 하러가기</a>
 
   <div id="results"></div>
 
