@@ -1,10 +1,32 @@
 <!DOCTYPE html>
-<html lang="ko">
+<html lang="ko" data-theme="dark">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>로또 번호 추천</title>
   <style>
+    :root[data-theme="dark"] {
+      --bg: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+      --text: #fff;
+      --subtitle: #aaa;
+      --row-bg: rgba(255, 255, 255, 0.07);
+      --row-border: rgba(255, 255, 255, 0.12);
+      --toggle-bg: rgba(255,255,255,0.12);
+      --toggle-color: #ffd200;
+      --toggle-border: rgba(255,255,255,0.2);
+    }
+
+    :root[data-theme="light"] {
+      --bg: linear-gradient(135deg, #e8f4fd 0%, #d0eaf8 50%, #b8dff5 100%);
+      --text: #1a1a2e;
+      --subtitle: #555;
+      --row-bg: rgba(255, 255, 255, 0.75);
+      --row-border: rgba(0, 0, 0, 0.1);
+      --toggle-bg: rgba(0,0,0,0.08);
+      --toggle-color: #0f3460;
+      --toggle-border: rgba(0,0,0,0.15);
+    }
+
     * {
       box-sizing: border-box;
       margin: 0;
@@ -13,27 +35,51 @@
 
     body {
       min-height: 100vh;
-      background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+      background: var(--bg);
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
       font-family: 'Segoe UI', sans-serif;
-      color: #fff;
+      color: var(--text);
       padding: 40px 20px;
+      transition: background 0.4s, color 0.4s;
+    }
+
+    .top-bar {
+      position: fixed;
+      top: 20px;
+      right: 24px;
+    }
+
+    #theme-toggle {
+      background: var(--toggle-bg);
+      border: 1px solid var(--toggle-border);
+      color: var(--toggle-color);
+      padding: 8px 18px;
+      border-radius: 50px;
+      font-size: 0.95rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.3s, color 0.3s, border 0.3s;
+    }
+
+    #theme-toggle:hover {
+      filter: brightness(1.15);
     }
 
     h1 {
       font-size: 2.4rem;
       margin-bottom: 8px;
       letter-spacing: 2px;
-      text-shadow: 0 0 20px rgba(255, 215, 0, 0.6);
+      text-shadow: 0 0 20px rgba(255, 215, 0, 0.5);
     }
 
     .subtitle {
       font-size: 1rem;
-      color: #aaa;
+      color: var(--subtitle);
       margin-bottom: 36px;
+      transition: color 0.4s;
     }
 
     button#generate {
@@ -69,14 +115,16 @@
     }
 
     .row {
-      background: rgba(255, 255, 255, 0.07);
-      border: 1px solid rgba(255, 255, 255, 0.12);
+      background: var(--row-bg);
+      border: 1px solid var(--row-border);
       border-radius: 16px;
       padding: 16px 24px;
       display: flex;
       align-items: center;
       gap: 14px;
       animation: fadeIn 0.35s ease both;
+      transition: background 0.4s, border 0.4s;
+      backdrop-filter: blur(6px);
     }
 
     .row-label {
@@ -105,12 +153,11 @@
       box-shadow: inset 0 -3px 6px rgba(0,0,0,0.25), 0 3px 8px rgba(0,0,0,0.3);
     }
 
-    /* 번호대별 색상 (실제 로또 기준) */
-    .b1  { background: linear-gradient(145deg, #f5c518, #e0a800); color: #1a1a2e; }
-    .b2  { background: linear-gradient(145deg, #4fc3f7, #0288d1); }
-    .b3  { background: linear-gradient(145deg, #ef5350, #c62828); }
-    .b4  { background: linear-gradient(145deg, #9e9e9e, #616161); }
-    .b5  { background: linear-gradient(145deg, #66bb6a, #2e7d32); }
+    .b1 { background: linear-gradient(145deg, #f5c518, #e0a800); color: #1a1a2e; }
+    .b2 { background: linear-gradient(145deg, #4fc3f7, #0288d1); }
+    .b3 { background: linear-gradient(145deg, #ef5350, #c62828); }
+    .b4 { background: linear-gradient(145deg, #9e9e9e, #616161); }
+    .b5 { background: linear-gradient(145deg, #66bb6a, #2e7d32); }
 
     @keyframes fadeIn {
       from { opacity: 0; transform: translateY(12px); }
@@ -120,6 +167,10 @@
 </head>
 <body>
 
+  <div class="top-bar">
+    <button id="theme-toggle">☀️ 라이트 모드</button>
+  </div>
+
   <h1>🍀 로또 번호 추천</h1>
   <p class="subtitle">버튼을 누르면 5세트의 행운의 번호를 드립니다!</p>
 
@@ -128,6 +179,23 @@
   <div id="results"></div>
 
   <script>
+    const html = document.documentElement;
+    const toggleBtn = document.getElementById('theme-toggle');
+
+    const saved = localStorage.getItem('theme') || 'dark';
+    setTheme(saved);
+
+    toggleBtn.addEventListener('click', () => {
+      const next = html.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+      setTheme(next);
+      localStorage.setItem('theme', next);
+    });
+
+    function setTheme(theme) {
+      html.setAttribute('data-theme', theme);
+      toggleBtn.textContent = theme === 'dark' ? '☀️ 라이트 모드' : '🌙 다크 모드';
+    }
+
     function pickLotto() {
       const nums = [];
       while (nums.length < 6) {
