@@ -5,7 +5,10 @@
     <title>우사기의 제초 작업! 🌱</title>
     <style>
         body {
-            background-color: #E8F5E9;
+            background-image: url('chiikawa_town.png');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
             margin: 0; overflow: hidden;
             font-family: 'Apple SD Gothic Neo', sans-serif;
             text-align: center;
@@ -209,7 +212,7 @@
         function createWeed() {
             if (!running) return;
             const weed = document.createElement('img');
-            weed.src = 'weed.png';
+            weed.src = 'grass.png';
             weed.className = 'weed';
             weed.style.left = Math.random() * (window.innerWidth - 60) + 'px';
             weed.style.top  = Math.random() * (window.innerHeight - 60) + 'px';
