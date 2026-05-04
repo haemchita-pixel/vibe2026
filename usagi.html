@@ -33,6 +33,10 @@
             position: absolute; width: 90px; cursor: pointer;
             z-index: 10; animation: wobble 0.7s infinite;
         }
+        .usagi-haa {
+            position: absolute; width: 90px; cursor: pointer;
+            z-index: 10; animation: wobble 0.8s infinite;
+        }
         @keyframes wobble {
             0% { transform: rotate(0deg); }
             50% { transform: rotate(10deg); }
@@ -154,6 +158,7 @@
     <audio id="endSound" src="폭탄 이얏하 맨뒤.m4a"></audio>
     <audio id="cuteSound" src="후웅~.m4a"></audio>
     <audio id="lopearSound" src="울라.m4a"></audio>
+    <audio id="haaSound" src="haaa.m4a"></audio>
 
     <script>
         const GAME_TIME = 30;
@@ -161,7 +166,7 @@
         let score = 0;
         let timeLeft = GAME_TIME;
         let running = false;
-        let weedInterval, usagiInterval, cuteInterval, lopearInterval, timerInterval;
+        let weedInterval, usagiInterval, cuteInterval, lopearInterval, haaInterval, timerInterval;
 
         const board = document.getElementById('game-board');
         const scoreDisplay = document.getElementById('score');
@@ -189,10 +194,11 @@
             endSound.pause();
             endSound.currentTime = 0;
 
-            weedInterval  = setInterval(createWeed,      1000);
-            usagiInterval = setInterval(createUsagi,     5000);
-            cuteInterval  = setInterval(createUsagiCute, 7000);
-            lopearInterval = setInterval(createLopear,   9000);
+            weedInterval  = setInterval(createWeed,       1000);
+            usagiInterval = setInterval(createUsagi,      5000);
+            cuteInterval  = setInterval(createUsagiCute,  7000);
+            lopearInterval = setInterval(createLopear,    9000);
+            haaInterval   = setInterval(createUsagiHaa,  11000);
             timerInterval = setInterval(tick, 1000);
         }
 
@@ -209,6 +215,7 @@
             clearInterval(usagiInterval);
             clearInterval(cuteInterval);
             clearInterval(lopearInterval);
+            clearInterval(haaInterval);
             clearInterval(timerInterval);
             board.innerHTML = '';
             finalScore.innerText = `최종 점수: ${score}점`;
@@ -277,6 +284,25 @@
             };
             board.appendChild(lopear);
             setTimeout(() => lopear.remove(), 3000);
+        }
+
+        function createUsagiHaa() {
+            if (!running) return;
+            const haa = document.createElement('img');
+            haa.src = 'usagi-haa.png';
+            haa.className = 'usagi-haa';
+            haa.style.left = Math.random() * (window.innerWidth - 90) + 'px';
+            haa.style.top  = Math.random() * (window.innerHeight - 90) + 'px';
+            haa.onclick = (e) => {
+                e.stopPropagation();
+                if (!running) return;
+                const snd = document.getElementById('haaSound');
+                snd.currentTime = 0;
+                snd.play();
+                haa.remove();
+            };
+            board.appendChild(haa);
+            setTimeout(() => haa.remove(), 3000);
         }
 
         function createUsagiCute() {
