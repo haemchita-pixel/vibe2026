@@ -18,27 +18,27 @@
             position: relative; cursor: crosshair;
         }
         .weed {
-            position: absolute; width: 60px; cursor: pointer;
+            position: absolute; width: 44px; cursor: pointer;
             transition: transform 0.1s;
         }
         .usagi {
-            position: absolute; width: 100px; cursor: pointer;
+            position: absolute; width: 150px; cursor: pointer;
             z-index: 10; animation: wobble 0.5s infinite;
         }
         .usagi-cute {
-            position: absolute; width: 90px; cursor: pointer;
+            position: absolute; width: 135px; cursor: pointer;
             z-index: 10; animation: wobble 0.6s infinite;
         }
         .lopear {
-            position: absolute; width: 90px; cursor: pointer;
+            position: absolute; width: 135px; cursor: pointer;
             z-index: 10; animation: wobble 0.7s infinite;
         }
         .usagi-haa {
-            position: absolute; width: 90px; cursor: pointer;
+            position: absolute; width: 135px; cursor: pointer;
             z-index: 10; animation: wobble 0.8s infinite;
         }
         .usagi-fun {
-            position: absolute; width: 90px; cursor: pointer;
+            position: absolute; width: 135px; cursor: pointer;
             z-index: 10; animation: wobble 0.9s infinite;
         }
         @keyframes wobble {
@@ -242,8 +242,8 @@
             const weed = document.createElement('img');
             weed.src = 'grass.png';
             weed.className = 'weed';
-            weed.style.left = Math.random() * (window.innerWidth - 60) + 'px';
-            weed.style.top  = Math.random() * (window.innerHeight - 60) + 'px';
+            weed.style.left = Math.random() * (window.innerWidth - 44) + 'px';
+            weed.style.top  = Math.random() * (window.innerHeight - 44) + 'px';
             weed.onclick = (e) => {
                 e.stopPropagation();
                 if (!running) return;
@@ -260,8 +260,8 @@
             const usagi = document.createElement('img');
             usagi.src = 'usagi.png';
             usagi.className = 'usagi';
-            usagi.style.left = Math.random() * (window.innerWidth - 100) + 'px';
-            usagi.style.top  = Math.random() * (window.innerHeight - 100) + 'px';
+            usagi.style.left = Math.random() * (window.innerWidth - 150) + 'px';
+            usagi.style.top  = Math.random() * (window.innerHeight - 150) + 'px';
             usagi.onclick = (e) => {
                 e.stopPropagation();
                 if (!running) return;
@@ -279,8 +279,8 @@
             const lopear = document.createElement('img');
             lopear.src = 'lopear.usagi.png';
             lopear.className = 'lopear';
-            lopear.style.left = Math.random() * (window.innerWidth - 90) + 'px';
-            lopear.style.top  = Math.random() * (window.innerHeight - 90) + 'px';
+            lopear.style.left = Math.random() * (window.innerWidth - 135) + 'px';
+            lopear.style.top  = Math.random() * (window.innerHeight - 135) + 'px';
             lopear.onclick = (e) => {
                 e.stopPropagation();
                 if (!running) return;
@@ -298,8 +298,8 @@
             const haa = document.createElement('img');
             haa.src = 'usagi-haa.png';
             haa.className = 'usagi-haa';
-            haa.style.left = Math.random() * (window.innerWidth - 90) + 'px';
-            haa.style.top  = Math.random() * (window.innerHeight - 90) + 'px';
+            haa.style.left = Math.random() * (window.innerWidth - 135) + 'px';
+            haa.style.top  = Math.random() * (window.innerHeight - 135) + 'px';
             haa.onclick = (e) => {
                 e.stopPropagation();
                 if (!running) return;
@@ -317,8 +317,8 @@
             const fun = document.createElement('img');
             fun.src = 'usagi.fun.png';
             fun.className = 'usagi-fun';
-            fun.style.left = Math.random() * (window.innerWidth - 90) + 'px';
-            fun.style.top  = Math.random() * (window.innerHeight - 90) + 'px';
+            fun.style.left = Math.random() * (window.innerWidth - 135) + 'px';
+            fun.style.top  = Math.random() * (window.innerHeight - 135) + 'px';
             fun.onclick = (e) => {
                 e.stopPropagation();
                 if (!running) return;
@@ -336,8 +336,8 @@
             const cute = document.createElement('img');
             cute.src = 'usagi.cute.png';
             cute.className = 'usagi-cute';
-            cute.style.left = Math.random() * (window.innerWidth - 90) + 'px';
-            cute.style.top  = Math.random() * (window.innerHeight - 90) + 'px';
+            cute.style.left = Math.random() * (window.innerWidth - 135) + 'px';
+            cute.style.top  = Math.random() * (window.innerHeight - 135) + 'px';
             cute.onclick = (e) => {
                 e.stopPropagation();
                 if (!running) return;
