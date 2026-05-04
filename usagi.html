@@ -25,6 +25,10 @@
             position: absolute; width: 100px; cursor: pointer;
             z-index: 10; animation: wobble 0.5s infinite;
         }
+        .usagi-cute {
+            position: absolute; width: 90px; cursor: pointer;
+            z-index: 10; animation: wobble 0.6s infinite;
+        }
         @keyframes wobble {
             0% { transform: rotate(0deg); }
             50% { transform: rotate(10deg); }
@@ -144,6 +148,7 @@
     <audio id="popSound" src="pop.mp3"></audio>
     <audio id="yahaSound" src="yaha.mp3"></audio>
     <audio id="endSound" src="폭탄 이얏하 맨뒤.m4a"></audio>
+    <audio id="cuteSound" src="후웅~.m4a"></audio>
 
     <script>
         const GAME_TIME = 30;
@@ -151,7 +156,7 @@
         let score = 0;
         let timeLeft = GAME_TIME;
         let running = false;
-        let weedInterval, usagiInterval, timerInterval;
+        let weedInterval, usagiInterval, cuteInterval, timerInterval;
 
         const board = document.getElementById('game-board');
         const scoreDisplay = document.getElementById('score');
@@ -179,8 +184,9 @@
             endSound.pause();
             endSound.currentTime = 0;
 
-            weedInterval  = setInterval(createWeed,  1000);
-            usagiInterval = setInterval(createUsagi, 5000);
+            weedInterval  = setInterval(createWeed,     1000);
+            usagiInterval = setInterval(createUsagi,    5000);
+            cuteInterval  = setInterval(createUsagiCute, 7000);
             timerInterval = setInterval(tick, 1000);
         }
 
@@ -195,6 +201,7 @@
             running = false;
             clearInterval(weedInterval);
             clearInterval(usagiInterval);
+            clearInterval(cuteInterval);
             clearInterval(timerInterval);
             board.innerHTML = '';
             finalScore.innerText = `최종 점수: ${score}점`;
@@ -244,6 +251,25 @@
             };
             board.appendChild(usagi);
             setTimeout(() => usagi.remove(), 2000);
+        }
+
+        function createUsagiCute() {
+            if (!running) return;
+            const cute = document.createElement('img');
+            cute.src = 'usagi.cute.png';
+            cute.className = 'usagi-cute';
+            cute.style.left = Math.random() * (window.innerWidth - 90) + 'px';
+            cute.style.top  = Math.random() * (window.innerHeight - 90) + 'px';
+            cute.onclick = (e) => {
+                e.stopPropagation();
+                if (!running) return;
+                const snd = document.getElementById('cuteSound');
+                snd.currentTime = 0;
+                snd.play();
+                cute.remove();
+            };
+            board.appendChild(cute);
+            setTimeout(() => cute.remove(), 3000);
         }
     </script>
 </body>
