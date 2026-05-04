@@ -2,7 +2,7 @@
 <html lang="ko">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
     <title>우사기의 제초 작업! 🌱</title>
     <style>
         body {
@@ -18,42 +18,50 @@
             touch-action: manipulation;
         }
         #game-board {
-            width: 100vw; height: 100vh;
+            width: 100%; max-width: 100%;
+            height: 100vh;
             position: relative; cursor: crosshair;
+            margin: 0 auto;
             touch-action: manipulation;
         }
         .weed {
-            position: absolute; width: 88px; cursor: pointer;
+            position: absolute;
+            width: clamp(44px, 12vw, 88px); cursor: pointer;
             transition: transform 0.1s;
             user-select: none; -webkit-user-select: none;
             -webkit-user-drag: none; touch-action: manipulation;
         }
         .usagi {
-            position: absolute; width: 300px; cursor: pointer;
+            position: absolute;
+            width: clamp(100px, 22vw, 300px); cursor: pointer;
             z-index: 10; animation: wobble 0.5s infinite;
             user-select: none; -webkit-user-select: none;
             -webkit-user-drag: none; touch-action: manipulation;
         }
         .usagi-cute {
-            position: absolute; width: 270px; cursor: pointer;
+            position: absolute;
+            width: clamp(90px, 20vw, 270px); cursor: pointer;
             z-index: 10; animation: wobble 0.6s infinite;
             user-select: none; -webkit-user-select: none;
             -webkit-user-drag: none; touch-action: manipulation;
         }
         .lopear {
-            position: absolute; width: 270px; cursor: pointer;
+            position: absolute;
+            width: clamp(90px, 20vw, 270px); cursor: pointer;
             z-index: 10; animation: wobble 0.7s infinite;
             user-select: none; -webkit-user-select: none;
             -webkit-user-drag: none; touch-action: manipulation;
         }
         .usagi-haa {
-            position: absolute; width: 270px; cursor: pointer;
+            position: absolute;
+            width: clamp(90px, 20vw, 270px); cursor: pointer;
             z-index: 10; animation: wobble 0.8s infinite;
             user-select: none; -webkit-user-select: none;
             -webkit-user-drag: none; touch-action: manipulation;
         }
         .usagi-fun {
-            position: absolute; width: 270px; cursor: pointer;
+            position: absolute;
+            width: clamp(90px, 20vw, 270px); cursor: pointer;
             z-index: 10; animation: wobble 0.9s infinite;
             user-select: none; -webkit-user-select: none;
             -webkit-user-drag: none; touch-action: manipulation;
@@ -125,7 +133,7 @@
             color: #fff; font-size: 2.2rem; margin-bottom: 28px;
         }
         #convict-img {
-            width: 300px;
+            width: clamp(160px, 40vw, 300px);
             border-radius: 20px;
             margin-bottom: 32px;
             animation: shake 0.4s ease infinite;
@@ -184,6 +192,10 @@
 
     <script>
         const GAME_TIME = 30;
+
+        function vwSize(vw, min, max) {
+            return Math.min(max, Math.max(min, window.innerWidth * vw / 100));
+        }
 
         let score = 0;
         let timeLeft = GAME_TIME;
@@ -259,8 +271,9 @@
             const weed = document.createElement('img');
             weed.src = 'grass.png';
             weed.className = 'weed';
-            weed.style.left = Math.random() * (window.innerWidth - 88) + 'px';
-            weed.style.top  = Math.random() * (window.innerHeight - 88) + 'px';
+            const ws = vwSize(12, 44, 88);
+            weed.style.left = Math.random() * (window.innerWidth - ws) + 'px';
+            weed.style.top  = Math.random() * (window.innerHeight - ws) + 'px';
             weed.onpointerdown = (e) => {
                 e.stopPropagation();
                 if (!running) return;
@@ -277,8 +290,9 @@
             const usagi = document.createElement('img');
             usagi.src = 'usagi.png';
             usagi.className = 'usagi';
-            usagi.style.left = Math.random() * (window.innerWidth - 300) + 'px';
-            usagi.style.top  = Math.random() * (window.innerHeight - 300) + 'px';
+            const us = vwSize(22, 100, 300);
+            usagi.style.left = Math.random() * (window.innerWidth - us) + 'px';
+            usagi.style.top  = Math.random() * (window.innerHeight - us) + 'px';
             usagi.onpointerdown = (e) => {
                 e.stopPropagation();
                 if (!running) return;
@@ -296,8 +310,8 @@
             const lopear = document.createElement('img');
             lopear.src = 'lopear.usagi.png';
             lopear.className = 'lopear';
-            lopear.style.left = Math.random() * (window.innerWidth - 270) + 'px';
-            lopear.style.top  = Math.random() * (window.innerHeight - 270) + 'px';
+            lopear.style.left = Math.random() * (window.innerWidth - vwSize(20, 90, 270)) + 'px';
+            lopear.style.top  = Math.random() * (window.innerHeight - vwSize(20, 90, 270)) + 'px';
             lopear.onpointerdown = (e) => {
                 e.stopPropagation();
                 if (!running) return;
@@ -315,8 +329,8 @@
             const haa = document.createElement('img');
             haa.src = 'usagi-haa.png';
             haa.className = 'usagi-haa';
-            haa.style.left = Math.random() * (window.innerWidth - 270) + 'px';
-            haa.style.top  = Math.random() * (window.innerHeight - 270) + 'px';
+            haa.style.left = Math.random() * (window.innerWidth - vwSize(20, 90, 270)) + 'px';
+            haa.style.top  = Math.random() * (window.innerHeight - vwSize(20, 90, 270)) + 'px';
             haa.onpointerdown = (e) => {
                 e.stopPropagation();
                 if (!running) return;
@@ -334,8 +348,8 @@
             const fun = document.createElement('img');
             fun.src = 'usagi.fun.png';
             fun.className = 'usagi-fun';
-            fun.style.left = Math.random() * (window.innerWidth - 270) + 'px';
-            fun.style.top  = Math.random() * (window.innerHeight - 270) + 'px';
+            fun.style.left = Math.random() * (window.innerWidth - vwSize(20, 90, 270)) + 'px';
+            fun.style.top  = Math.random() * (window.innerHeight - vwSize(20, 90, 270)) + 'px';
             fun.onpointerdown = (e) => {
                 e.stopPropagation();
                 if (!running) return;
@@ -353,8 +367,8 @@
             const cute = document.createElement('img');
             cute.src = 'usagi.cute.png';
             cute.className = 'usagi-cute';
-            cute.style.left = Math.random() * (window.innerWidth - 270) + 'px';
-            cute.style.top  = Math.random() * (window.innerHeight - 270) + 'px';
+            cute.style.left = Math.random() * (window.innerWidth - vwSize(20, 90, 270)) + 'px';
+            cute.style.top  = Math.random() * (window.innerHeight - vwSize(20, 90, 270)) + 'px';
             cute.onpointerdown = (e) => {
                 e.stopPropagation();
                 if (!running) return;
