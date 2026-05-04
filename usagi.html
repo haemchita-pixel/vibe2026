@@ -29,6 +29,10 @@
             position: absolute; width: 90px; cursor: pointer;
             z-index: 10; animation: wobble 0.6s infinite;
         }
+        .lopear {
+            position: absolute; width: 90px; cursor: pointer;
+            z-index: 10; animation: wobble 0.7s infinite;
+        }
         @keyframes wobble {
             0% { transform: rotate(0deg); }
             50% { transform: rotate(10deg); }
@@ -149,6 +153,7 @@
     <audio id="yahaSound" src="yaha.mp3"></audio>
     <audio id="endSound" src="폭탄 이얏하 맨뒤.m4a"></audio>
     <audio id="cuteSound" src="후웅~.m4a"></audio>
+    <audio id="lopearSound" src="울라.m4a"></audio>
 
     <script>
         const GAME_TIME = 30;
@@ -156,7 +161,7 @@
         let score = 0;
         let timeLeft = GAME_TIME;
         let running = false;
-        let weedInterval, usagiInterval, cuteInterval, timerInterval;
+        let weedInterval, usagiInterval, cuteInterval, lopearInterval, timerInterval;
 
         const board = document.getElementById('game-board');
         const scoreDisplay = document.getElementById('score');
@@ -184,9 +189,10 @@
             endSound.pause();
             endSound.currentTime = 0;
 
-            weedInterval  = setInterval(createWeed,     1000);
-            usagiInterval = setInterval(createUsagi,    5000);
+            weedInterval  = setInterval(createWeed,      1000);
+            usagiInterval = setInterval(createUsagi,     5000);
             cuteInterval  = setInterval(createUsagiCute, 7000);
+            lopearInterval = setInterval(createLopear,   9000);
             timerInterval = setInterval(tick, 1000);
         }
 
@@ -202,6 +208,7 @@
             clearInterval(weedInterval);
             clearInterval(usagiInterval);
             clearInterval(cuteInterval);
+            clearInterval(lopearInterval);
             clearInterval(timerInterval);
             board.innerHTML = '';
             finalScore.innerText = `최종 점수: ${score}점`;
@@ -251,6 +258,25 @@
             };
             board.appendChild(usagi);
             setTimeout(() => usagi.remove(), 2000);
+        }
+
+        function createLopear() {
+            if (!running) return;
+            const lopear = document.createElement('img');
+            lopear.src = 'lopear.usagi.png';
+            lopear.className = 'lopear';
+            lopear.style.left = Math.random() * (window.innerWidth - 90) + 'px';
+            lopear.style.top  = Math.random() * (window.innerHeight - 90) + 'px';
+            lopear.onclick = (e) => {
+                e.stopPropagation();
+                if (!running) return;
+                const snd = document.getElementById('lopearSound');
+                snd.currentTime = 0;
+                snd.play();
+                lopear.remove();
+            };
+            board.appendChild(lopear);
+            setTimeout(() => lopear.remove(), 3000);
         }
 
         function createUsagiCute() {
