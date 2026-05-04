@@ -2,6 +2,7 @@
 <html lang="ko">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>우사기의 제초 작업! 🌱</title>
     <style>
         body {
@@ -12,34 +13,50 @@
             margin: 0; overflow: hidden;
             font-family: 'Apple SD Gothic Neo', sans-serif;
             text-align: center;
+            user-select: none;
+            -webkit-user-select: none;
+            touch-action: manipulation;
         }
         #game-board {
             width: 100vw; height: 100vh;
             position: relative; cursor: crosshair;
+            touch-action: manipulation;
         }
         .weed {
             position: absolute; width: 88px; cursor: pointer;
             transition: transform 0.1s;
+            user-select: none; -webkit-user-select: none;
+            -webkit-user-drag: none; touch-action: manipulation;
         }
         .usagi {
             position: absolute; width: 300px; cursor: pointer;
             z-index: 10; animation: wobble 0.5s infinite;
+            user-select: none; -webkit-user-select: none;
+            -webkit-user-drag: none; touch-action: manipulation;
         }
         .usagi-cute {
             position: absolute; width: 270px; cursor: pointer;
             z-index: 10; animation: wobble 0.6s infinite;
+            user-select: none; -webkit-user-select: none;
+            -webkit-user-drag: none; touch-action: manipulation;
         }
         .lopear {
             position: absolute; width: 270px; cursor: pointer;
             z-index: 10; animation: wobble 0.7s infinite;
+            user-select: none; -webkit-user-select: none;
+            -webkit-user-drag: none; touch-action: manipulation;
         }
         .usagi-haa {
             position: absolute; width: 270px; cursor: pointer;
             z-index: 10; animation: wobble 0.8s infinite;
+            user-select: none; -webkit-user-select: none;
+            -webkit-user-drag: none; touch-action: manipulation;
         }
         .usagi-fun {
             position: absolute; width: 270px; cursor: pointer;
             z-index: 10; animation: wobble 0.9s infinite;
+            user-select: none; -webkit-user-select: none;
+            -webkit-user-drag: none; touch-action: manipulation;
         }
         @keyframes wobble {
             0% { transform: rotate(0deg); }
@@ -180,8 +197,8 @@
         const endScreen = document.getElementById('end-screen');
         const finalScore = document.getElementById('final-score');
 
-        document.getElementById('start-btn').addEventListener('click', startGame);
-        document.getElementById('restart-btn').addEventListener('click', startGame);
+        document.getElementById('start-btn').addEventListener('pointerdown', startGame);
+        document.getElementById('restart-btn').addEventListener('pointerdown', startGame);
 
         function startGame() {
             score = 0;
@@ -244,7 +261,7 @@
             weed.className = 'weed';
             weed.style.left = Math.random() * (window.innerWidth - 88) + 'px';
             weed.style.top  = Math.random() * (window.innerHeight - 88) + 'px';
-            weed.onclick = (e) => {
+            weed.onpointerdown = (e) => {
                 e.stopPropagation();
                 if (!running) return;
                 score += 10;
@@ -262,7 +279,7 @@
             usagi.className = 'usagi';
             usagi.style.left = Math.random() * (window.innerWidth - 300) + 'px';
             usagi.style.top  = Math.random() * (window.innerHeight - 300) + 'px';
-            usagi.onclick = (e) => {
+            usagi.onpointerdown = (e) => {
                 e.stopPropagation();
                 if (!running) return;
                 score += 50;
@@ -281,7 +298,7 @@
             lopear.className = 'lopear';
             lopear.style.left = Math.random() * (window.innerWidth - 270) + 'px';
             lopear.style.top  = Math.random() * (window.innerHeight - 270) + 'px';
-            lopear.onclick = (e) => {
+            lopear.onpointerdown = (e) => {
                 e.stopPropagation();
                 if (!running) return;
                 const snd = document.getElementById('lopearSound');
@@ -300,7 +317,7 @@
             haa.className = 'usagi-haa';
             haa.style.left = Math.random() * (window.innerWidth - 270) + 'px';
             haa.style.top  = Math.random() * (window.innerHeight - 270) + 'px';
-            haa.onclick = (e) => {
+            haa.onpointerdown = (e) => {
                 e.stopPropagation();
                 if (!running) return;
                 const snd = document.getElementById('haaSound');
@@ -319,7 +336,7 @@
             fun.className = 'usagi-fun';
             fun.style.left = Math.random() * (window.innerWidth - 270) + 'px';
             fun.style.top  = Math.random() * (window.innerHeight - 270) + 'px';
-            fun.onclick = (e) => {
+            fun.onpointerdown = (e) => {
                 e.stopPropagation();
                 if (!running) return;
                 const snd = document.getElementById('funSound');
@@ -338,7 +355,7 @@
             cute.className = 'usagi-cute';
             cute.style.left = Math.random() * (window.innerWidth - 270) + 'px';
             cute.style.top  = Math.random() * (window.innerHeight - 270) + 'px';
-            cute.onclick = (e) => {
+            cute.onpointerdown = (e) => {
                 e.stopPropagation();
                 if (!running) return;
                 const snd = document.getElementById('cuteSound');
