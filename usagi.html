@@ -77,7 +77,7 @@
         /* 종료 화면 */
         #end-screen {
             position: fixed; inset: 0;
-            background: rgba(0,0,0,0.6);
+            background: rgba(0,0,0,0.75);
             display: none; flex-direction: column;
             align-items: center; justify-content: center;
             z-index: 200;
@@ -86,7 +86,18 @@
             color: #ffd200; font-size: 2.4rem; margin-bottom: 12px;
         }
         #final-score {
-            color: #fff; font-size: 1.6rem; margin-bottom: 32px;
+            color: #fff; font-size: 1.6rem; margin-bottom: 20px;
+        }
+        #convict-img {
+            width: 200px;
+            border-radius: 16px;
+            margin-bottom: 24px;
+            animation: shake 0.4s ease infinite;
+        }
+        @keyframes shake {
+            0%   { transform: rotate(-4deg); }
+            50%  { transform: rotate(4deg); }
+            100% { transform: rotate(-4deg); }
         }
         #restart-btn {
             background: linear-gradient(135deg, #f7971e, #ffd200);
@@ -121,6 +132,7 @@
 
     <div id="end-screen">
         <h2>⏰ 시간 종료!</h2>
+        <img id="convict-img" src="usagi.convict.png" alt="우사기 죄수" style="display:none;" />
         <div id="final-score"></div>
         <button id="restart-btn">다시 하기</button>
         <button id="home-btn" onclick="location.href='index.html'">🍀 로또 페이지로</button>
@@ -128,6 +140,7 @@
 
     <audio id="popSound" src="pop.mp3"></audio>
     <audio id="yahaSound" src="yaha.mp3"></audio>
+    <audio id="endSound" src="폭탄 이얏하 맨뒤.m4a"></audio>
 
     <script>
         const GAME_TIME = 30;
@@ -158,6 +171,10 @@
 
             document.getElementById('start-screen').style.display = 'none';
             endScreen.style.display = 'none';
+            document.getElementById('convict-img').style.display = 'none';
+            const endSound = document.getElementById('endSound');
+            endSound.pause();
+            endSound.currentTime = 0;
 
             weedInterval  = setInterval(createWeed,  1000);
             usagiInterval = setInterval(createUsagi, 5000);
@@ -178,6 +195,14 @@
             clearInterval(timerInterval);
             board.innerHTML = '';
             finalScore.innerText = `최종 점수: ${score}점`;
+
+            const convictImg = document.getElementById('convict-img');
+            convictImg.style.display = 'block';
+
+            const endSound = document.getElementById('endSound');
+            endSound.currentTime = 0;
+            endSound.play();
+
             endScreen.style.display = 'flex';
         }
 
