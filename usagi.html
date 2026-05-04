@@ -5,7 +5,7 @@
     <title>우사기의 제초 작업! 🌱</title>
     <style>
         body {
-            background-color: #E8F5E9; /* 연그린 배경 */
+            background-color: #E8F5E9;
             margin: 0; overflow: hidden;
             font-family: 'Apple SD Gothic Neo', sans-serif;
             text-align: center;
@@ -31,71 +31,191 @@
             position: fixed; top: 20px; left: 20px;
             font-size: 24px; font-weight: bold; color: #2E7D32;
             background: white; padding: 10px 20px; border-radius: 20px;
+            z-index: 100;
         }
+        #timer-board {
+            position: fixed; top: 20px; right: 20px;
+            font-size: 24px; font-weight: bold; color: #2E7D32;
+            background: white; padding: 10px 20px; border-radius: 20px;
+            z-index: 100;
+            transition: color 0.3s;
+        }
+        #timer-board.urgent {
+            color: #c62828;
+            animation: pulse 0.5s infinite;
+        }
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.08); }
+            100% { transform: scale(1); }
+        }
+
+        /* 시작 화면 */
+        #start-screen {
+            position: fixed; inset: 0;
+            background: rgba(0,0,0,0.55);
+            display: flex; flex-direction: column;
+            align-items: center; justify-content: center;
+            z-index: 200;
+        }
+        #start-screen h2 {
+            color: #fff; font-size: 2rem; margin-bottom: 12px;
+        }
+        #start-screen p {
+            color: #ddd; font-size: 1rem; margin-bottom: 32px;
+        }
+        #start-btn {
+            background: linear-gradient(135deg, #a8e063, #56ab2f);
+            color: #fff; border: none;
+            padding: 16px 52px; font-size: 1.3rem;
+            font-weight: 700; border-radius: 50px;
+            cursor: pointer;
+            box-shadow: 0 4px 20px rgba(86,171,47,0.45);
+        }
+        #start-btn:hover { filter: brightness(1.1); }
+
+        /* 종료 화면 */
+        #end-screen {
+            position: fixed; inset: 0;
+            background: rgba(0,0,0,0.6);
+            display: none; flex-direction: column;
+            align-items: center; justify-content: center;
+            z-index: 200;
+        }
+        #end-screen h2 {
+            color: #ffd200; font-size: 2.4rem; margin-bottom: 12px;
+        }
+        #final-score {
+            color: #fff; font-size: 1.6rem; margin-bottom: 32px;
+        }
+        #restart-btn {
+            background: linear-gradient(135deg, #f7971e, #ffd200);
+            color: #1a1a2e; border: none;
+            padding: 14px 48px; font-size: 1.2rem;
+            font-weight: 700; border-radius: 50px;
+            cursor: pointer;
+            box-shadow: 0 4px 20px rgba(255,210,0,0.4);
+            margin-bottom: 14px;
+        }
+        #restart-btn:hover { filter: brightness(1.1); }
+        #home-btn {
+            background: transparent;
+            color: #ccc; border: 1px solid #888;
+            padding: 10px 32px; font-size: 1rem;
+            border-radius: 50px; cursor: pointer;
+        }
+        #home-btn:hover { color: #fff; border-color: #fff; }
     </style>
 </head>
 <body>
 
     <div id="score-board">제초 점수: <span id="score">0</span></div>
-    <div id="game-board" onclick="missClick()"></div>
+    <div id="timer-board">⏱ <span id="timer">30</span>초</div>
+    <div id="game-board"></div>
 
-    <!-- 사운드 (파일이 없다면 실행 시 에러는 안 나게 처리됨) -->
+    <div id="start-screen">
+        <h2>🌱 우사기의 제초 작업!</h2>
+        <p>30초 안에 잡초를 최대한 많이 제거하세요!<br>🌿 잡초 +10점 &nbsp;|&nbsp; 🐰 우사기 +50점</p>
+        <button id="start-btn">게임 시작!</button>
+    </div>
+
+    <div id="end-screen">
+        <h2>⏰ 시간 종료!</h2>
+        <div id="final-score"></div>
+        <button id="restart-btn">다시 하기</button>
+        <button id="home-btn" onclick="location.href='index.html'">🍀 로또 페이지로</button>
+    </div>
+
     <audio id="popSound" src="pop.mp3"></audio>
     <audio id="yahaSound" src="yaha.mp3"></audio>
 
     <script>
+        const GAME_TIME = 30;
+
         let score = 0;
+        let timeLeft = GAME_TIME;
+        let running = false;
+        let weedInterval, usagiInterval, timerInterval;
+
         const board = document.getElementById('game-board');
         const scoreDisplay = document.getElementById('score');
+        const timerDisplay = document.getElementById('timer');
+        const timerBoard = document.getElementById('timer-board');
+        const endScreen = document.getElementById('end-screen');
+        const finalScore = document.getElementById('final-score');
 
-        // 1. 잡초 생성 함수
+        document.getElementById('start-btn').addEventListener('click', startGame);
+        document.getElementById('restart-btn').addEventListener('click', startGame);
+
+        function startGame() {
+            score = 0;
+            timeLeft = GAME_TIME;
+            running = true;
+            scoreDisplay.innerText = 0;
+            timerDisplay.innerText = GAME_TIME;
+            timerBoard.classList.remove('urgent');
+            board.innerHTML = '';
+
+            document.getElementById('start-screen').style.display = 'none';
+            endScreen.style.display = 'none';
+
+            weedInterval  = setInterval(createWeed,  1000);
+            usagiInterval = setInterval(createUsagi, 5000);
+            timerInterval = setInterval(tick, 1000);
+        }
+
+        function tick() {
+            timeLeft--;
+            timerDisplay.innerText = timeLeft;
+            if (timeLeft <= 10) timerBoard.classList.add('urgent');
+            if (timeLeft <= 0) endGame();
+        }
+
+        function endGame() {
+            running = false;
+            clearInterval(weedInterval);
+            clearInterval(usagiInterval);
+            clearInterval(timerInterval);
+            board.innerHTML = '';
+            finalScore.innerText = `최종 점수: ${score}점`;
+            endScreen.style.display = 'flex';
+        }
+
         function createWeed() {
+            if (!running) return;
             const weed = document.createElement('img');
-            weed.src = 'weed.png'; // 잡초 이미지 파일명
+            weed.src = 'weed.png';
             weed.className = 'weed';
-
-            // 랜덤 위치 설정
             weed.style.left = Math.random() * (window.innerWidth - 60) + 'px';
-            weed.style.top = Math.random() * (window.innerHeight - 60) + 'px';
-
+            weed.style.top  = Math.random() * (window.innerHeight - 60) + 'px';
             weed.onclick = (e) => {
-                e.stopPropagation(); // 바닥 클릭 이벤트 방지
+                e.stopPropagation();
+                if (!running) return;
                 score += 10;
                 scoreDisplay.innerText = score;
                 document.getElementById('popSound').play();
                 weed.remove();
             };
-
             board.appendChild(weed);
         }
 
-        // 2. 우사기(보너스) 생성 함수
         function createUsagi() {
+            if (!running) return;
             const usagi = document.createElement('img');
-            usagi.src = 'usagi.png'; // 우사기 이미지 파일명
+            usagi.src = 'usagi.png';
             usagi.className = 'usagi';
-
             usagi.style.left = Math.random() * (window.innerWidth - 100) + 'px';
-            usagi.style.top = Math.random() * (window.innerHeight - 100) + 'px';
-
+            usagi.style.top  = Math.random() * (window.innerHeight - 100) + 'px';
             usagi.onclick = (e) => {
                 e.stopPropagation();
-                score += 50; // 우사기는 보너스!
+                if (!running) return;
+                score += 50;
                 scoreDisplay.innerText = score;
                 document.getElementById('yahaSound').play();
                 usagi.remove();
             };
-
             board.appendChild(usagi);
-            setTimeout(() => { if(usagi) usagi.remove(); }, 2000); // 2초 뒤 사라짐
-        }
-
-        // 게임 루프
-        setInterval(createWeed, 1000); // 1초마다 잡초 생성
-        setInterval(createUsagi, 5000); // 5초마다 우사기 등장
-
-        function missClick() {
-            // 바닥 클릭 시 효과 (필요하면 추가)
+            setTimeout(() => usagi.remove(), 2000);
         }
     </script>
 </body>
