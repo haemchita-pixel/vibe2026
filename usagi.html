@@ -102,15 +102,15 @@
             z-index: 200;
         }
         #end-screen h2 {
-            color: #ffd200; font-size: 2.4rem; margin-bottom: 12px;
+            color: #ffd200; font-size: 3.2rem; margin-bottom: 16px;
         }
         #final-score {
-            color: #fff; font-size: 1.6rem; margin-bottom: 20px;
+            color: #fff; font-size: 2.2rem; margin-bottom: 28px;
         }
         #convict-img {
-            width: 200px;
-            border-radius: 16px;
-            margin-bottom: 24px;
+            width: 300px;
+            border-radius: 20px;
+            margin-bottom: 32px;
             animation: shake 0.4s ease infinite;
         }
         @keyframes shake {
@@ -121,17 +121,17 @@
         #restart-btn {
             background: linear-gradient(135deg, #f7971e, #ffd200);
             color: #1a1a2e; border: none;
-            padding: 14px 48px; font-size: 1.2rem;
+            padding: 18px 64px; font-size: 1.5rem;
             font-weight: 700; border-radius: 50px;
             cursor: pointer;
             box-shadow: 0 4px 20px rgba(255,210,0,0.4);
-            margin-bottom: 14px;
+            margin-bottom: 18px;
         }
         #restart-btn:hover { filter: brightness(1.1); }
         #home-btn {
             background: transparent;
             color: #ccc; border: 1px solid #888;
-            padding: 10px 32px; font-size: 1rem;
+            padding: 14px 44px; font-size: 1.2rem;
             border-radius: 50px; cursor: pointer;
         }
         #home-btn:hover { color: #fff; border-color: #fff; }
@@ -271,7 +271,7 @@
                 usagi.remove();
             };
             board.appendChild(usagi);
-            setTimeout(() => usagi.remove(), 2000);
+            setTimeout(() => usagi.remove(), 4000);
         }
 
         function createLopear() {
@@ -290,7 +290,7 @@
                 lopear.remove();
             };
             board.appendChild(lopear);
-            setTimeout(() => lopear.remove(), 3000);
+            setTimeout(() => lopear.remove(), 5000);
         }
 
         function createUsagiHaa() {
@@ -309,7 +309,7 @@
                 haa.remove();
             };
             board.appendChild(haa);
-            setTimeout(() => haa.remove(), 3000);
+            setTimeout(() => haa.remove(), 5000);
         }
 
         function createUsagiFun() {
@@ -328,7 +328,7 @@
                 fun.remove();
             };
             board.appendChild(fun);
-            setTimeout(() => fun.remove(), 3000);
+            setTimeout(() => fun.remove(), 5000);
         }
 
         function createUsagiCute() {
@@ -347,7 +347,7 @@
                 cute.remove();
             };
             board.appendChild(cute);
-            setTimeout(() => cute.remove(), 3000);
+            setTimeout(() => cute.remove(), 5000);
         }
     </script>
 </body>
