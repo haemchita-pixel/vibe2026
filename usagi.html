@@ -37,6 +37,10 @@
             position: absolute; width: 90px; cursor: pointer;
             z-index: 10; animation: wobble 0.8s infinite;
         }
+        .usagi-fun {
+            position: absolute; width: 90px; cursor: pointer;
+            z-index: 10; animation: wobble 0.9s infinite;
+        }
         @keyframes wobble {
             0% { transform: rotate(0deg); }
             50% { transform: rotate(10deg); }
@@ -159,6 +163,7 @@
     <audio id="cuteSound" src="후웅~.m4a"></audio>
     <audio id="lopearSound" src="울라.m4a"></audio>
     <audio id="haaSound" src="haaa.m4a"></audio>
+    <audio id="funSound" src="이얏하.m4a"></audio>
 
     <script>
         const GAME_TIME = 30;
@@ -166,7 +171,7 @@
         let score = 0;
         let timeLeft = GAME_TIME;
         let running = false;
-        let weedInterval, usagiInterval, cuteInterval, lopearInterval, haaInterval, timerInterval;
+        let weedInterval, usagiInterval, cuteInterval, lopearInterval, haaInterval, funInterval, timerInterval;
 
         const board = document.getElementById('game-board');
         const scoreDisplay = document.getElementById('score');
@@ -199,6 +204,7 @@
             cuteInterval  = setInterval(createUsagiCute,  7000);
             lopearInterval = setInterval(createLopear,    9000);
             haaInterval   = setInterval(createUsagiHaa,  11000);
+            funInterval   = setInterval(createUsagiFun,  13000);
             timerInterval = setInterval(tick, 1000);
         }
 
@@ -216,6 +222,7 @@
             clearInterval(cuteInterval);
             clearInterval(lopearInterval);
             clearInterval(haaInterval);
+            clearInterval(funInterval);
             clearInterval(timerInterval);
             board.innerHTML = '';
             finalScore.innerText = `최종 점수: ${score}점`;
@@ -303,6 +310,25 @@
             };
             board.appendChild(haa);
             setTimeout(() => haa.remove(), 3000);
+        }
+
+        function createUsagiFun() {
+            if (!running) return;
+            const fun = document.createElement('img');
+            fun.src = 'usagi.fun.png';
+            fun.className = 'usagi-fun';
+            fun.style.left = Math.random() * (window.innerWidth - 90) + 'px';
+            fun.style.top  = Math.random() * (window.innerHeight - 90) + 'px';
+            fun.onclick = (e) => {
+                e.stopPropagation();
+                if (!running) return;
+                const snd = document.getElementById('funSound');
+                snd.currentTime = 0;
+                snd.play();
+                fun.remove();
+            };
+            board.appendChild(fun);
+            setTimeout(() => fun.remove(), 3000);
         }
 
         function createUsagiCute() {
